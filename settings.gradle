@@ -1,0 +1,3 @@
+rootProject.name = 'EProkhorova-gradle'
+include 'hw01-gradle'
+
