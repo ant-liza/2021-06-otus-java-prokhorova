@@ -6,30 +6,37 @@ import ru.otus.annotations.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class DemoTest {
-    String one;
-    String two;
-    String five;
+public class DemoTest3 {
+    int one;
+    int two;
+    int five;
 
     @Before
     void setUp() {
-        one = "ONE";
-        two = "TWO";
-        five = "FIVE";
+        one = 1;
+        two = 2;
+        five = 5;
     }
 
-    @Test(name = "Test №1")
+    @Test(name = "Test * 1")
     void testOne() {
         assertThat(one).isEqualTo(one);
     }
 
-    @Test(name = "Test №2")
+    @Test(name = "Test * 2")
     void testTwo() {
         assertThat(two).isEqualTo(two);
     }
 
+    @Test(name = "Test * 3")
+    void testThree() {
+        assertThat(two).isEqualTo(five);
+    }
+
     @After
     void setAfter() {
-        five = "";
+        five = 0;
+        one = 0;
+        two = 0;
     }
 }

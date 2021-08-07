@@ -21,9 +21,10 @@ public class DemoTest2 {
     }
 
     @Before
-    void setUp2() {
+    void setUp2() throws IllegalArgumentException {
         System.out.println("setUp2() start");
         four = "Fdtdth";
+        throw new IllegalArgumentException("fjfjfj");
     }
 
     @Test(name = "Test # 1")
