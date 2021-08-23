@@ -11,10 +11,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ATM implements CashMachinable {
-    private int countOfHundredBanknotes = 100;
-    private int countOfTwoHundredBanknotes = 100;
-    private int countOfFiveHundredBanknotes = 200;
-    private int countOfThousandHundredBanknotes = 100;
+    Map<NominalValue, Integer> existsCountOfNominalMap;
+
+    public ATM(Map<NominalValue, Integer> map) {
+        this.existsCountOfNominalMap = map;
+    }
 
     @Override
     public void acceptBanknotes(Banknotable banknote) throws NoSuchNominalValueExistsException {
@@ -24,7 +25,7 @@ public class ATM implements CashMachinable {
     @Override
     public List<Banknotable> makeWithdrawal(int amount) throws NoSuchNominalValueExistsException, IncorrectWithdrawalValue {
         if (amount % 100 != 0) {
-            throw new IncorrectWithdrawalValue();
+            throw new IncorrectWithdrawalValue(amount);
         }
         BanknoteFactory banknoteFactory = new BanknoteFactory();
         List<Banknotable> listOfBanknotesForGivingAway = Lists.newArrayList();
@@ -48,44 +49,38 @@ public class ATM implements CashMachinable {
 
     private void recalculateCountOfBanknotes(Banknotable banknote) throws NoSuchNominalValueExistsException {
         NominalValue banknoteNV = banknote.getNominalValue();
-        switch (banknoteNV) {
-            case HUNDRED:
-                countOfHundredBanknotes++;
-                break;
-            case TWO_HUNDRED:
-                countOfTwoHundredBanknotes++;
-                break;
-            case FIVE_HUNDRED:
-                countOfFiveHundredBanknotes++;
-                break;
-            case THOUSAND:
-                countOfThousandHundredBanknotes++;
-                break;
-            default:
-                throw new NoSuchNominalValueExistsException();
+        if (existsCountOfNominalMap.containsKey(banknoteNV)) {
+            int countOfBankNotes = existsCountOfNominalMap.get(banknoteNV);
+            int newCount = countOfBankNotes + 1;
+            existsCountOfNominalMap.put(banknoteNV, newCount);
+        } else {
+            throw new NoSuchNominalValueExistsException(banknoteNV.getValue());
         }
     }
 
     @Override
     public int getCashBalanceLeft() {
-        return countOfHundredBanknotes * 100
-                + countOfTwoHundredBanknotes * 200
-                + countOfFiveHundredBanknotes * 500
-                + countOfThousandHundredBanknotes * 1000;
+        int countOfBanknotes = 0;
+        for (Map.Entry<NominalValue, Integer> entry : existsCountOfNominalMap.entrySet()) {
+            final NominalValue nominal = entry.getKey();
+            final Integer amount = entry.getValue();
+            countOfBanknotes += nominal.getValue() * amount;
+        }
+        return countOfBanknotes;
     }
 
     @Override
     public void recalculateBanknotesLeftOversAfterWithdrawal(List<Banknotable> listOfBanknotesForGivingAway) {
+        Map<NominalValue, Integer> hf = null;
         for (Banknotable b : listOfBanknotesForGivingAway) {
             NominalValue banknoteNominal = b.getNominalValue();
-            if (banknoteNominal == NominalValue.HUNDRED) {
-                countOfHundredBanknotes--;
-            } else if (banknoteNominal == NominalValue.TWO_HUNDRED) {
-                countOfTwoHundredBanknotes--;
-            } else if (banknoteNominal == NominalValue.FIVE_HUNDRED) {
-                countOfFiveHundredBanknotes--;
-            } else if (banknoteNominal == NominalValue.THOUSAND) {
-                countOfThousandHundredBanknotes--;
+            for (Map.Entry<NominalValue, Integer> entry : existsCountOfNominalMap.entrySet()) {
+                final NominalValue existsNominal = entry.getKey();
+                final Integer existsAmount = entry.getValue();
+                if (existsNominal == banknoteNominal) {
+                    int newAmount = existsAmount - 1;
+                    existsCountOfNominalMap.put(banknoteNominal, newAmount);
+                }
             }
         }
     }

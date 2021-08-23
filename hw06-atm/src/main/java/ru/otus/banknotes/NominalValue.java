@@ -24,6 +24,6 @@ public enum NominalValue {
                 return nv;
             }
         }
-        throw new NoSuchNominalValueExistsException();
+        throw new NoSuchNominalValueExistsException(value);
     }
 }
