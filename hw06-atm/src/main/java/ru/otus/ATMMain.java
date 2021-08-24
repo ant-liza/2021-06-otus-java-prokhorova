@@ -1,7 +1,7 @@
 package ru.otus;
 
 import ru.otus.atm.ATM;
-import ru.otus.banknotes.NominalValue;
+import ru.otus.banknotes.Nominal;
 import ru.otus.banknotes.factory.BanknoteFactory;
 
 import java.util.HashMap;
@@ -12,16 +12,12 @@ public class ATMMain {
 
     public static void main(String[] args) throws Exception {
         BanknoteFactory banknoteFactory = new BanknoteFactory();
-        Map<NominalValue, Integer> countOfNominal = new HashMap<>();
-        countOfNominal.put(NominalValue.HUNDRED, 100);
-        countOfNominal.put(NominalValue.THOUSAND, 50);
-        countOfNominal.put(NominalValue.TWO_HUNDRED, 50);
-        countOfNominal.put(NominalValue.FIVE_HUNDRED, 20);
+        Map<Nominal, Integer> countOfNominal = new HashMap<>();
+        countOfNominal.put(Nominal.HUNDRED, 100);
+        countOfNominal.put(Nominal.THOUSAND, 50);
+        countOfNominal.put(Nominal.TWO_HUNDRED, 50);
+        countOfNominal.put(Nominal.FIVE_HUNDRED, 20);
         ATM atm = new ATM(countOfNominal);
-        System.out.println("Вносим 100");
-        atm.acceptBanknotes(banknoteFactory.getBanknote(NominalValue.HUNDRED));
-        System.out.println("Вносим 1000");
-        atm.acceptBanknotes(banknoteFactory.getBanknote(NominalValue.THOUSAND));
         System.out.println("Сумма денег в банкомате:\n" + atm.getCashBalanceLeft());
         //вводим сумму для снятия
         System.out.println("---Введите сумму для снятия---");

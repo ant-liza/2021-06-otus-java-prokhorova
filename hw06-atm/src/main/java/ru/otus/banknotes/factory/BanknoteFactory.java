@@ -1,7 +1,7 @@
 package ru.otus.banknotes.factory;
 
 import ru.otus.banknotes.Banknotable;
-import ru.otus.banknotes.NominalValue;
+import ru.otus.banknotes.Nominal;
 import ru.otus.banknotes.children.FiveHundredBanknote;
 import ru.otus.banknotes.children.HundredBanknote;
 import ru.otus.banknotes.children.ThousandBanknote;
@@ -9,8 +9,8 @@ import ru.otus.banknotes.children.TwoHundredBanknote;
 import ru.otus.exceptions.NoSuchNominalValueExistsException;
 
 public class BanknoteFactory {
-    public Banknotable getBanknote(NominalValue nominalValueType) throws NoSuchNominalValueExistsException{
-        switch (nominalValueType) {
+    public Banknotable getBanknote(Nominal nominalType) throws NoSuchNominalValueExistsException{
+        switch (nominalType) {
             case HUNDRED:
                 return new HundredBanknote();
             case TWO_HUNDRED:
