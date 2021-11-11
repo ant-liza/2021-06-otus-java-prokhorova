@@ -17,7 +17,5 @@ public class TestLogImpl implements TestLog {
     }
 
     @Override
-    public void calculation(String a, int b, String c) {
-
-    }
+    public void calculation(String a, int b, String c) { System.out.println("Three parameters with String"); }
 }
