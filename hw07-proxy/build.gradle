@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.otus'
+version 'unspecified'
+
+dependencies {
+    implementation 'com.google.guava:guava'
+}
+
+repositories {
+    mavenCentral()
+}
